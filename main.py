@@ -1,3 +1,4 @@
+import string
 import unidecode
 import requests
 from bs4 import BeautifulSoup
@@ -15,6 +16,8 @@ class Synonyms():
         self.resp_get = requests.get(self.url)
         self.soup = BeautifulSoup(self.resp_get.content, features='lxml')
         self.synonyms = []
+        self.replace = []
+        self.string = string
 
     def find_title(self):
         """Acha o titulo, algo como: sinonimo de "palavra" e printa isso
@@ -46,7 +49,7 @@ errado!')
         for index, word in enumerate(self.synonyms):
             print(index, word)
 
-    def run(self):
+    def run_for_word(self):
         """Executa todos os métodos anteriores.
         """
         try:
@@ -57,13 +60,20 @@ errado!')
         except Exception as e:
             print(e)
 
+    def run_for_text(self, string):
+        string.lower().strip().replace('.', '').replace(',', '').split()
+        bag_of_words = [word for word in string if len(word) >= 5]
+
+        for word in bag_of_words:
+            Synonyms(word).run_for_word()
+            self.replacereplace.append(
+                input(f'Por qual palavra quer substituir {word}? '))
+
+        print(self.replace)
+
 
 if __name__ == '__main__':
     string = 'Para começar o projeto você pode optar por várias técnicas, \
         a fim de coletar as informações necessárias'
 
-    string = string.lower().strip().replace('.', '').replace(',', '').split()
-
-    bag_of_words = [word for word in string if len(word) >= 5]
-    for word in bag_of_words:
-        Synonyms(word).run()
+    Synonyms().run_for_text(string=string)
