@@ -42,7 +42,7 @@ class Synonyms():
         for index, words in enumerate(self.synonyms):
             print(f'{index}, {words}')
 
-    def random_word(self, word, accuracy=2):
+    def random_word(self, word, accuracy=4):
         self.word = unidecode.unidecode(word.strip().lower())
         self.url = f'http://www.sinonimos.com.br/{self.word}'
         self.resp_get = requests.get(self.url)
@@ -54,7 +54,9 @@ class Synonyms():
         self.random_synonyms = self.synonyms[0][randint(
             0, int(self.lenght/accuracy))]
 
-        print(self.random_synonyms.strip())
+        print(self.random_synonyms)
+
+        self.synonyms.clear()
 
     def text(self, text, size_of_word=5):
         self.full_text = text
@@ -94,15 +96,11 @@ Texto modificado: {self.final_text}
         ]
 
         for single_word in self.bag_of_words:
-            print(f'\nTexto: {" ".join(self.partial_text)}\n')
-
-            Synonyms().random_word(single_word)
-
             for item in range(len(self.partial_text)):
                 if self.partial_text[item] == single_word:
                     self.partial_text[item] = self.random_word(single_word)
 
-            self.final_text = ' '.join(self.partial_text)
+        self.final_text = ' '.join(self.partial_text)
 
         print(f'''
 Texto original: {self.full_text}
@@ -111,7 +109,8 @@ Texto modificado: {self.final_text}
 
 
 if __name__ == '__main__':
-    texto = 'Para começar o projeto você pode optar por várias técnicas, a fim de coletar as informações necessárias'
+    texto = 'Para começar o projeto você pode optar por várias técnicas, \
+a fim de coletar as informações necessárias'
 
     palavra = 'precisão'
 
