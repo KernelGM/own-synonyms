@@ -27,7 +27,7 @@ class Synonyms():
                 data.get_text().strip().replace('.', '').split(','))
 
         for index, word in enumerate(self.synonyms):
-            print(index, word)
+            print(f'{index}, {word}')
 
     def word(self, word):
         self.word = unidecode.unidecode(word.strip().lower())
@@ -41,23 +41,35 @@ class Synonyms():
             print(e)
 
     def text(self, text, size_of_word=5):
-        self.text = text.lower().strip()\
+        self.full_text = text
+
+        self.partial_text = self.full_text.lower().strip()\
             .replace('.', '').replace(',', '').split()
 
         self.bag_of_words = [
-            word for word in self.text if len(word) >= size_of_word
+            word for word in self.partial_text if len(word) >= size_of_word
         ]
 
         for single_word in self.bag_of_words:
+            print(f'\nTexto: {" ".join(self.partial_text)}\n')
+
             Synonyms().word(single_word)
+
+            for item in range(len(self.partial_text)):
+                if self.partial_text[item] == single_word:
+                    self.partial_text[item] = input(
+                        f'\nPor qual palavra quer substituir {single_word}? ')
+
+            self.final_text = ' '.join(self.partial_text)
+
+        print(f'''
+Texto original: {self.full_text}
+Texto modificado: {self.final_text}
+              ''')
 
 
 if __name__ == '__main__':
     texto = 'Para começar o projeto você pode optar por várias técnicas, \
-        a fim de coletar as informações necessárias'
+a fim de coletar as informações necessárias'
 
     Synonyms().text(texto)
-
-    palavra = 'achar'
-
-    Synonyms().word(palavra)
